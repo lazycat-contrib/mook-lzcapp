@@ -1,0 +1,20 @@
+package: community.lazycat.app.mook
+version: 0.4.6
+name: Mook
+description: "Self-hosted AI-assisted SSH terminal and server management workbench"
+author: NikoYomi
+license: MIT
+homepage: https://github.com/NikoYomi/mook
+min_os_version: 1.5.0
+
+permissions:
+  required:
+    - net.internet
+
+locales:
+  zh:
+    name: "Mook"
+    description: "支持 AI 的自托管服务器运维工作台：Web SSH 终端、服务器监控、SFTP 文件管理与 AI 辅助，一个网页入口集中管理所有 VPS"
+  en:
+    name: "Mook"
+    description: "Self-hosted, AI-assisted server workbench with Web SSH terminal, monitoring, SFTP file management and AI help"

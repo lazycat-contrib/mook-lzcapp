@@ -1,0 +1,12 @@
+manifest: ./lzc-manifest.yml
+pkgout: ./dist
+icon: ./icon.png
+
+compose_override:
+  services:
+    mook:
+      security_opt:
+        - no-new-privileges:true
+      cap_drop:
+        - ALL
+      restart: unless-stopped

@@ -1,0 +1,53 @@
+application:
+  subdomain: mook
+  background_task: true
+  multi_instance: false
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://mook:5866/
+
+services:
+  mook:
+    # upstream: nikoyomi/mook:0.4.6 (ghcr.io/nikoyomi/mook is the primary, Docker Hub mirror)
+    image: docker.1ms.run/nikoyomi/mook:0.4.6@sha256:574530132aa8e0909a9227385582f2db87bc2621b763e8707ed7aab6ef6e1e5b
+    environment:
+      - TZ=Asia/Shanghai
+      - MOOK_PORT=5866
+      - MOOK_DATA=/data
+      - MOOK_PASSWORD={{ .U.admin_password }}
+      # Encryption key for stored SSH credentials and AI keys.
+      - MOOK_SECRET={{ stable_secret "credentials_key" }}
+    binds:
+      # SQLite database, stored SSH credentials, AI keys and encryption key.
+      - /lzcapp/var/mook:/data
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -q
+        - -O
+        - /dev/null
+        - http://127.0.0.1:5866/
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+usage: |
+  Mook 是支持 AI 的自托管服务器运维工作台：把 Web SSH 终端、服务器监控、SFTP 文件管理和 AI 辅助
+  融为一体，一个网页入口集中管理所有 VPS。
+
+  快速开始：
+  1. 打开应用，输入安装时设置的「管理员密码」登录。
+  2. 在「服务器管理」中添加 VPS（支持密码或私钥认证）。
+  3. 之后即可使用 Web 终端、SFTP 文件管理与监控面板；AI 助手在「设置 → AI 助手」中配置
+     OpenAI 兼容接口（DeepSeek、OpenAI、Gemini、Kimi、智谱、Ollama 或自定义厂商）。
+
+  安全提示：
+  - Mook 通过 SSH 连接并管理你的服务器，请只在可信网络中使用，并保持密码足够强度；
+  - 本应用通过懒猫微服的内网鉴权访问，外部访问建议再叠加 HTTPS 反向代理；
+  - 登录失败 5 次会锁定 15 分钟；SSH 密码、私钥与 AI Key 均加密存储。
+
+  数据：SQLite 数据库与凭据保存在应用数据目录，卸载重装前请先备份。
