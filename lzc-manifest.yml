@@ -7,11 +7,10 @@ application:
   upstreams:
     - location: /
       backend: http://mook:5866/
-
 services:
   mook:
-    # upstream: nikoyomi/mook:0.4.6 (ghcr.io/nikoyomi/mook is the primary, Docker Hub mirror)
-    image: docker.1ms.run/nikoyomi/mook:0.4.6@sha256:574530132aa8e0909a9227385582f2db87bc2621b763e8707ed7aab6ef6e1e5b
+    # upstream: docker.io/nikoyomi/mook:0.4.6
+    image: docker.1ms.run/nikoyomi/mook:0.4.6
     environment:
       - TZ=Asia/Shanghai
       - MOOK_PORT=5866
@@ -34,8 +33,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
-
-usage: |
+usage: |-
   Mook 是支持 AI 的自托管服务器运维工作台：把 Web SSH 终端、服务器监控、SFTP 文件管理和 AI 辅助
   融为一体，一个网页入口集中管理所有 VPS。
 
